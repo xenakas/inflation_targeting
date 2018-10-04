@@ -1,5 +1,9 @@
 library(readxl)
 library(ggplot2)
+library(latex2exp)
+library(AER)
+library(xtable)
+
 
 my_df <- read.csv(file="/home/xenakas/Desktop/hw2/Inflation.csv", header=TRUE, sep=",")
 my_df <- cbind(my_df, diff = my_df$Средняя.инфляция.после.перехода - my_df$Средняя.инфляция.перехода)
@@ -12,6 +16,9 @@ ggplot(df_targ, aes(x=df_targ$Средняя.инфляция.перехода, 
     ylab("Средняя инфляция после перехода") + scale_colour_discrete(name="Группа стран", labels=c("Развивающиеся", "Развитые"))
 
 t.test(df_targ$Средняя.инфляция.перехода, df_targ$Средняя.инфляция.после.перехода, paired = TRUE)
+
+mean(df_targ$Средняя.инфляция.перехода) 
+mean(df_targ$Средняя.инфляция.после.перехода)
 
 # ggplot(my_df, aes(x=my_df$Средняя.инфляция.перехода, y=my_df$Средняя.инфляция.после.перехода)) + geom_point(aes(color=as.factor(my_df$Развивающая.страна))) + geom_smooth(method='lm',formula=y~x) + xlab("Средняя инфляция до перехода") +
 #   ylab("Средняя инфляция после перехода") + scale_colour_discrete(name="Группа стран", labels=c("Развивающиеся", "Развитые"))
@@ -38,4 +45,6 @@ summary(model_b2)
 model_b3 <- lm(data=df_razvit, diff ~ df_razvit$Таргетирует.инфляцию  + df_razvit$Средняя.инфляция.перехода)  
 summary(model_b3)
 
+
+print(xtable(model_b3), include.rownames = TRUE, include.colnames = TRUE, sanitize.text.function = I)
 
